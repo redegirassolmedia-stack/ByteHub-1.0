@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Mercado PayPay</string>
+    <string name="title_activity_main">Mercado PayPay</string>
+    <string name="package_name">com.mercadopaypay.app</string>
+    <string name="custom_url_scheme">com.mercadopaypay.app</string>
+</resources>
