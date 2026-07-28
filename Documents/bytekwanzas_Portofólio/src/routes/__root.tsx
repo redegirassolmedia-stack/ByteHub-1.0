@@ -78,17 +78,43 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "ByteKwanza — Soluções Digitais que Transformam o Seu Negócio" },
-      { name: "description", content: "Desenvolvimento web, e-commerce, portais e sistemas personalizados em Angola. Peça já o seu orçamento gratuito à ByteKwanza." },
+      {
+        name: "description",
+        content:
+          "Desenvolvimento web, e-commerce, portais e sistemas personalizados em Angola. Peça já o seu orçamento gratuito à ByteKwanza.",
+      },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "ByteKwanza — Soluções Digitais que Transformam o Seu Negócio" },
-      { property: "og:description", content: "Desenvolvimento web, e-commerce, portais e sistemas personalizados em Angola. Peça já o seu orçamento gratuito à ByteKwanza." },
+      {
+        property: "og:title",
+        content: "ByteKwanza — Soluções Digitais que Transformam o Seu Negócio",
+      },
+      {
+        property: "og:description",
+        content:
+          "Desenvolvimento web, e-commerce, portais e sistemas personalizados em Angola. Peça já o seu orçamento gratuito à ByteKwanza.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "ByteKwanza — Soluções Digitais que Transformam o Seu Negócio" },
-      { name: "twitter:description", content: "Desenvolvimento web, e-commerce, portais e sistemas personalizados em Angola. Peça já o seu orçamento gratuito à ByteKwanza." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a9b0c756-6655-4f9f-ac89-e51daf8b87bb/id-preview-da44e785--2c28f8db-ffa9-46ab-9841-c5a7afc40b2e.lovable.app-1785181992035.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a9b0c756-6655-4f9f-ac89-e51daf8b87bb/id-preview-da44e785--2c28f8db-ffa9-46ab-9841-c5a7afc40b2e.lovable.app-1785181992035.png" },
+      {
+        name: "twitter:title",
+        content: "ByteKwanza — Soluções Digitais que Transformam o Seu Negócio",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Desenvolvimento web, e-commerce, portais e sistemas personalizados em Angola. Peça já o seu orçamento gratuito à ByteKwanza.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a9b0c756-6655-4f9f-ac89-e51daf8b87bb/id-preview-da44e785--2c28f8db-ffa9-46ab-9841-c5a7afc40b2e.lovable.app-1785181992035.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a9b0c756-6655-4f9f-ac89-e51daf8b87bb/id-preview-da44e785--2c28f8db-ffa9-46ab-9841-c5a7afc40b2e.lovable.app-1785181992035.png",
+      },
     ],
     links: [
       {

@@ -33,7 +33,10 @@ export const Route = createFileRoute("/")({
         content:
           "Desenvolvimento web, e-commerce, portais e sistemas personalizados em Angola. Peça já o seu orçamento gratuito à ByteKwanza.",
       },
-      { property: "og:title", content: "ByteKwanza — Soluções Digitais que Transformam o Seu Negócio" },
+      {
+        property: "og:title",
+        content: "ByteKwanza — Soluções Digitais que Transformam o Seu Negócio",
+      },
       {
         property: "og:description",
         content:
@@ -212,9 +215,21 @@ const addons = [
 ];
 
 const reasons = [
-  { icon: Sparkles, title: "Preços competitivos", desc: "Qualidade a preços justos para o mercado angolano." },
-  { icon: Users, title: "Equipa dedicada", desc: "Profissionais focados no sucesso do seu projecto." },
-  { icon: Zap, title: "Tecnologia actualizada", desc: "Stacks modernas, seguras e de alta performance." },
+  {
+    icon: Sparkles,
+    title: "Preços competitivos",
+    desc: "Qualidade a preços justos para o mercado angolano.",
+  },
+  {
+    icon: Users,
+    title: "Equipa dedicada",
+    desc: "Profissionais focados no sucesso do seu projecto.",
+  },
+  {
+    icon: Zap,
+    title: "Tecnologia actualizada",
+    desc: "Stacks modernas, seguras e de alta performance.",
+  },
   { icon: Wrench, title: "Suporte pós-lançamento", desc: "Acompanhamento contínuo e manutenção." },
   { icon: Clock, title: "Prazos cumpridos", desc: "Compromisso rigoroso com as datas acordadas." },
   { icon: Shield, title: "Soluções à medida", desc: "Cada projecto personalizado ao seu negócio." },
@@ -241,85 +256,266 @@ const portfolio = [
   },
 ];
 
-
 type Token = { cls: string; text: string };
 type CodeLine = Token[];
 
 const C = {
-  kw:   "oklch(0.72 0.18 295)",   // purple  – keywords
-  tag:  "oklch(0.65 0.15 220)",   // blue    – tags / imports
-  str:  "oklch(0.72 0.18 148)",   // green   – strings
-  fn:   "oklch(0.85 0.15 90)",    // yellow  – function names
-  attr: "oklch(0.75 0.14 185)",   // teal    – attributes / props
-  val:  "oklch(0.78 0.18 45)",    // orange  – values / numbers
-  cmt:  "oklch(0.45 0.02 258)",   // gray    – comments
-  txt:  "oklch(0.88 0.02 258)",   // white   – plain text
-  acc:  "oklch(0.72 0.13 78)",    // gold    – brand accent
+  kw: "oklch(0.72 0.18 295)", // purple  – keywords
+  tag: "oklch(0.65 0.15 220)", // blue    – tags / imports
+  str: "oklch(0.72 0.18 148)", // green   – strings
+  fn: "oklch(0.85 0.15 90)", // yellow  – function names
+  attr: "oklch(0.75 0.14 185)", // teal    – attributes / props
+  val: "oklch(0.78 0.18 45)", // orange  – values / numbers
+  cmt: "oklch(0.45 0.02 258)", // gray    – comments
+  txt: "oklch(0.88 0.02 258)", // white   – plain text
+  acc: "oklch(0.72 0.13 78)", // gold    – brand accent
 };
 
 const codeSnippets: {
-  lang: string; file: string; badge: string; badgeColor: string; lines: CodeLine[];
+  lang: string;
+  file: string;
+  badge: string;
+  badgeColor: string;
+  lines: CodeLine[];
 }[] = [
   {
-    lang: "TSX", file: "Hero.tsx", badge: "React", badgeColor: C.tag,
+    lang: "TSX",
+    file: "Hero.tsx",
+    badge: "React",
+    badgeColor: C.tag,
     lines: [
-      [{cls:C.kw,text:"import"},{cls:C.txt,text:" { "},{cls:C.attr,text:"useState"},{cls:C.txt,text:" } "},{cls:C.kw,text:"from"},{cls:C.str,text:" 'react'"},{cls:C.txt,text:";"}],
+      [
+        { cls: C.kw, text: "import" },
+        { cls: C.txt, text: " { " },
+        { cls: C.attr, text: "useState" },
+        { cls: C.txt, text: " } " },
+        { cls: C.kw, text: "from" },
+        { cls: C.str, text: " 'react'" },
+        { cls: C.txt, text: ";" },
+      ],
       [],
-      [{cls:C.cmt,text:"// ByteKwanza — Hero Section"}],
-      [{cls:C.kw,text:"export function"},{cls:C.txt,text:" "},{cls:C.fn,text:"Hero"},{cls:C.txt,text:"() {"}],
-      [{cls:C.txt,text:"  "},{cls:C.kw,text:"return"},{cls:C.txt,text:" ("}],
-      [{cls:C.txt,text:"    "},{cls:C.tag,text:"<section"},{cls:C.txt,text:" "},{cls:C.attr,text:"className"},{cls:C.txt,text:"="},{cls:C.str,text:'"hero-gradient"'},{cls:C.tag,text:">"}],
-      [{cls:C.txt,text:"      "},{cls:C.tag,text:"<h1"},{cls:C.txt,text:" "},{cls:C.attr,text:"className"},{cls:C.txt,text:"="},{cls:C.str,text:'"title"'},{cls:C.tag,text:">"}],
-      [{cls:C.txt,text:"        Soluções Digitais 🇦🇴"}],
-      [{cls:C.txt,text:"      "},{cls:C.tag,text:"</h1>"}],
-      [{cls:C.txt,text:"      "},{cls:C.tag,text:"<button"},{cls:C.txt,text:" "},{cls:C.attr,text:"onClick"},{cls:C.txt,text:"={"},{cls:C.fn,text:"handleCTA"},{cls:C.txt,text:"}"}],
-      [{cls:C.txt,text:"        className="},{cls:C.str,text:'"cta-btn"'},{cls:C.tag,text:">"}],
-      [{cls:C.txt,text:"        Orçamento Gratuito ✨"}],
-      [{cls:C.txt,text:"      "},{cls:C.tag,text:"</button>"}],
-      [{cls:C.txt,text:"    "},{cls:C.tag,text:"</section>"}],
-      [{cls:C.txt,text:"  );"}],
-      [{cls:C.txt,text:"}"}],
+      [{ cls: C.cmt, text: "// ByteKwanza — Hero Section" }],
+      [
+        { cls: C.kw, text: "export function" },
+        { cls: C.txt, text: " " },
+        { cls: C.fn, text: "Hero" },
+        { cls: C.txt, text: "() {" },
+      ],
+      [
+        { cls: C.txt, text: "  " },
+        { cls: C.kw, text: "return" },
+        { cls: C.txt, text: " (" },
+      ],
+      [
+        { cls: C.txt, text: "    " },
+        { cls: C.tag, text: "<section" },
+        { cls: C.txt, text: " " },
+        { cls: C.attr, text: "className" },
+        { cls: C.txt, text: "=" },
+        { cls: C.str, text: '"hero-gradient"' },
+        { cls: C.tag, text: ">" },
+      ],
+      [
+        { cls: C.txt, text: "      " },
+        { cls: C.tag, text: "<h1" },
+        { cls: C.txt, text: " " },
+        { cls: C.attr, text: "className" },
+        { cls: C.txt, text: "=" },
+        { cls: C.str, text: '"title"' },
+        { cls: C.tag, text: ">" },
+      ],
+      [{ cls: C.txt, text: "        Soluções Digitais 🇦🇴" }],
+      [
+        { cls: C.txt, text: "      " },
+        { cls: C.tag, text: "</h1>" },
+      ],
+      [
+        { cls: C.txt, text: "      " },
+        { cls: C.tag, text: "<button" },
+        { cls: C.txt, text: " " },
+        { cls: C.attr, text: "onClick" },
+        { cls: C.txt, text: "={" },
+        { cls: C.fn, text: "handleCTA" },
+        { cls: C.txt, text: "}" },
+      ],
+      [
+        { cls: C.txt, text: "        className=" },
+        { cls: C.str, text: '"cta-btn"' },
+        { cls: C.tag, text: ">" },
+      ],
+      [{ cls: C.txt, text: "        Orçamento Gratuito ✨" }],
+      [
+        { cls: C.txt, text: "      " },
+        { cls: C.tag, text: "</button>" },
+      ],
+      [
+        { cls: C.txt, text: "    " },
+        { cls: C.tag, text: "</section>" },
+      ],
+      [{ cls: C.txt, text: "  );" }],
+      [{ cls: C.txt, text: "}" }],
     ],
   },
   {
-    lang: "CSS", file: "styles.css", badge: "Design", badgeColor: C.str,
+    lang: "CSS",
+    file: "styles.css",
+    badge: "Design",
+    badgeColor: C.str,
     lines: [
-      [{cls:C.cmt,text:"/* ByteKwanza — Design System */"}],
+      [{ cls: C.cmt, text: "/* ByteKwanza — Design System */" }],
       [],
-      [{cls:C.fn,text:".hero-gradient"},{cls:C.txt,text:" {"}],
-      [{cls:C.txt,text:"  "},{cls:C.attr,text:"background"},{cls:C.txt,text:": "},{cls:C.fn,text:"linear-gradient"},{cls:C.txt,text:"("}],
-      [{cls:C.txt,text:"    "},{cls:C.val,text:"135deg"},{cls:C.txt,text:", "},{cls:C.str,text:"#0a0e1a"},{cls:C.txt,text:", "},{cls:C.str,text:"#1a2040"}],
-      [{cls:C.txt,text:"  );"}],
-      [{cls:C.txt,text:"  "},{cls:C.attr,text:"display"},{cls:C.txt,text:": "},{cls:C.val,text:"grid"},{cls:C.txt,text:";"}],
-      [{cls:C.txt,text:"  "},{cls:C.attr,text:"place-items"},{cls:C.txt,text:": "},{cls:C.val,text:"center"},{cls:C.txt,text:";"}],
-      [{cls:C.txt,text:"}"}],
+      [
+        { cls: C.fn, text: ".hero-gradient" },
+        { cls: C.txt, text: " {" },
+      ],
+      [
+        { cls: C.txt, text: "  " },
+        { cls: C.attr, text: "background" },
+        { cls: C.txt, text: ": " },
+        { cls: C.fn, text: "linear-gradient" },
+        { cls: C.txt, text: "(" },
+      ],
+      [
+        { cls: C.txt, text: "    " },
+        { cls: C.val, text: "135deg" },
+        { cls: C.txt, text: ", " },
+        { cls: C.str, text: "#0a0e1a" },
+        { cls: C.txt, text: ", " },
+        { cls: C.str, text: "#1a2040" },
+      ],
+      [{ cls: C.txt, text: "  );" }],
+      [
+        { cls: C.txt, text: "  " },
+        { cls: C.attr, text: "display" },
+        { cls: C.txt, text: ": " },
+        { cls: C.val, text: "grid" },
+        { cls: C.txt, text: ";" },
+      ],
+      [
+        { cls: C.txt, text: "  " },
+        { cls: C.attr, text: "place-items" },
+        { cls: C.txt, text: ": " },
+        { cls: C.val, text: "center" },
+        { cls: C.txt, text: ";" },
+      ],
+      [{ cls: C.txt, text: "}" }],
       [],
-      [{cls:C.fn,text:".cta-btn"},{cls:C.txt,text:" {"}],
-      [{cls:C.txt,text:"  "},{cls:C.attr,text:"background"},{cls:C.txt,text:": "},{cls:C.str,text:"oklch(0.72 0.13 78)"},{cls:C.txt,text:";"}],
-      [{cls:C.txt,text:"  "},{cls:C.attr,text:"border-radius"},{cls:C.txt,text:": "},{cls:C.val,text:"9999px"},{cls:C.txt,text:";"}],
-      [{cls:C.txt,text:"  "},{cls:C.attr,text:"font-weight"},{cls:C.txt,text:": "},{cls:C.val,text:"700"},{cls:C.txt,text:";"}],
-      [{cls:C.txt,text:"  "},{cls:C.attr,text:"transition"},{cls:C.txt,text:": "},{cls:C.val,text:"all 0.2s ease"},{cls:C.txt,text:";"}],
-      [{cls:C.txt,text:"}"}],
+      [
+        { cls: C.fn, text: ".cta-btn" },
+        { cls: C.txt, text: " {" },
+      ],
+      [
+        { cls: C.txt, text: "  " },
+        { cls: C.attr, text: "background" },
+        { cls: C.txt, text: ": " },
+        { cls: C.str, text: "oklch(0.72 0.13 78)" },
+        { cls: C.txt, text: ";" },
+      ],
+      [
+        { cls: C.txt, text: "  " },
+        { cls: C.attr, text: "border-radius" },
+        { cls: C.txt, text: ": " },
+        { cls: C.val, text: "9999px" },
+        { cls: C.txt, text: ";" },
+      ],
+      [
+        { cls: C.txt, text: "  " },
+        { cls: C.attr, text: "font-weight" },
+        { cls: C.txt, text: ": " },
+        { cls: C.val, text: "700" },
+        { cls: C.txt, text: ";" },
+      ],
+      [
+        { cls: C.txt, text: "  " },
+        { cls: C.attr, text: "transition" },
+        { cls: C.txt, text: ": " },
+        { cls: C.val, text: "all 0.2s ease" },
+        { cls: C.txt, text: ";" },
+      ],
+      [{ cls: C.txt, text: "}" }],
     ],
   },
   {
-    lang: "JSON", file: "package.json", badge: "Config", badgeColor: C.val,
+    lang: "JSON",
+    file: "package.json",
+    badge: "Config",
+    badgeColor: C.val,
     lines: [
-      [{cls:C.txt,text:"{"}],
-      [{cls:C.txt,text:'  '},{cls:C.str,text:'"name"'},{cls:C.txt,text:": "},{cls:C.val,text:'"bytekwanza-ao"'},{cls:C.txt,text:","}],
-      [{cls:C.txt,text:'  '},{cls:C.str,text:'"version"'},{cls:C.txt,text:": "},{cls:C.val,text:'"2.0.0"'},{cls:C.txt,text:","}],
-      [{cls:C.txt,text:'  '},{cls:C.str,text:'"author"'},{cls:C.txt,text:": "},{cls:C.val,text:'"ByteKwanza 🇦🇴"'},{cls:C.txt,text:","}],
-      [{cls:C.txt,text:'  '},{cls:C.str,text:'"license"'},{cls:C.txt,text:": "},{cls:C.val,text:'"MIT"'},{cls:C.txt,text:","}],
-      [{cls:C.txt,text:'  '},{cls:C.str,text:'"scripts"'},{cls:C.txt,text:": {"}],
-      [{cls:C.txt,text:'    '},{cls:C.str,text:'"dev"'},{cls:C.txt,text:": "},{cls:C.val,text:'"vite"'},{cls:C.txt,text:","}],
-      [{cls:C.txt,text:'    '},{cls:C.str,text:'"build"'},{cls:C.txt,text:": "},{cls:C.val,text:'"vite build"'},{cls:C.txt,text:","}],
-      [{cls:C.txt,text:'    '},{cls:C.str,text:'"deploy"'},{cls:C.txt,text:": "},{cls:C.val,text:'"gh-pages -d dist"'}],
-      [{cls:C.txt,text:"  },"}],
-      [{cls:C.txt,text:'  '},{cls:C.str,text:'"dependencies"'},{cls:C.txt,text:": {"}],
-      [{cls:C.txt,text:'    '},{cls:C.str,text:'"react"'},{cls:C.txt,text:": "},{cls:C.val,text:'"^18.3.0"'},{cls:C.txt,text:","}],
-      [{cls:C.txt,text:'    '},{cls:C.str,text:'"typescript"'},{cls:C.txt,text:": "},{cls:C.val,text:'"^5.5.0"'}],
-      [{cls:C.txt,text:"  }"}],
-      [{cls:C.txt,text:"}"}],
+      [{ cls: C.txt, text: "{" }],
+      [
+        { cls: C.txt, text: "  " },
+        { cls: C.str, text: '"name"' },
+        { cls: C.txt, text: ": " },
+        { cls: C.val, text: '"bytekwanza-ao"' },
+        { cls: C.txt, text: "," },
+      ],
+      [
+        { cls: C.txt, text: "  " },
+        { cls: C.str, text: '"version"' },
+        { cls: C.txt, text: ": " },
+        { cls: C.val, text: '"2.0.0"' },
+        { cls: C.txt, text: "," },
+      ],
+      [
+        { cls: C.txt, text: "  " },
+        { cls: C.str, text: '"author"' },
+        { cls: C.txt, text: ": " },
+        { cls: C.val, text: '"ByteKwanza 🇦🇴"' },
+        { cls: C.txt, text: "," },
+      ],
+      [
+        { cls: C.txt, text: "  " },
+        { cls: C.str, text: '"license"' },
+        { cls: C.txt, text: ": " },
+        { cls: C.val, text: '"MIT"' },
+        { cls: C.txt, text: "," },
+      ],
+      [
+        { cls: C.txt, text: "  " },
+        { cls: C.str, text: '"scripts"' },
+        { cls: C.txt, text: ": {" },
+      ],
+      [
+        { cls: C.txt, text: "    " },
+        { cls: C.str, text: '"dev"' },
+        { cls: C.txt, text: ": " },
+        { cls: C.val, text: '"vite"' },
+        { cls: C.txt, text: "," },
+      ],
+      [
+        { cls: C.txt, text: "    " },
+        { cls: C.str, text: '"build"' },
+        { cls: C.txt, text: ": " },
+        { cls: C.val, text: '"vite build"' },
+        { cls: C.txt, text: "," },
+      ],
+      [
+        { cls: C.txt, text: "    " },
+        { cls: C.str, text: '"deploy"' },
+        { cls: C.txt, text: ": " },
+        { cls: C.val, text: '"gh-pages -d dist"' },
+      ],
+      [{ cls: C.txt, text: "  }," }],
+      [
+        { cls: C.txt, text: "  " },
+        { cls: C.str, text: '"dependencies"' },
+        { cls: C.txt, text: ": {" },
+      ],
+      [
+        { cls: C.txt, text: "    " },
+        { cls: C.str, text: '"react"' },
+        { cls: C.txt, text: ": " },
+        { cls: C.val, text: '"^18.3.0"' },
+        { cls: C.txt, text: "," },
+      ],
+      [
+        { cls: C.txt, text: "    " },
+        { cls: C.str, text: '"typescript"' },
+        { cls: C.txt, text: ": " },
+        { cls: C.val, text: '"^5.5.0"' },
+      ],
+      [{ cls: C.txt, text: "  }" }],
+      [{ cls: C.txt, text: "}" }],
     ],
   },
 ];
@@ -336,7 +532,7 @@ function CodeTerminal() {
 
   // cursor blink
   useEffect(() => {
-    const t = setInterval(() => setBlink(b => !b), 530);
+    const t = setInterval(() => setBlink((b) => !b), 530);
     return () => clearInterval(t);
   }, []);
 
@@ -349,7 +545,7 @@ function CodeTerminal() {
     if (phase === "fading") {
       setOpacity(0);
       const t = setTimeout(() => {
-        setSIdx(p => (p + 1) % codeSnippets.length);
+        setSIdx((p) => (p + 1) % codeSnippets.length);
         setLineIdx(0);
         setCharIdx(0);
         setOpacity(1);
@@ -365,19 +561,19 @@ function CodeTerminal() {
         if (lineIdx + 1 >= snippet.lines.length) {
           setPhase("pause");
         } else {
-          setLineIdx(l => l + 1);
+          setLineIdx((l) => l + 1);
           setCharIdx(0);
         }
       }, 55);
       return () => clearTimeout(t);
     }
-    const lineText = currentLine.map(tk => tk.text).join("");
+    const lineText = currentLine.map((tk) => tk.text).join("");
     if (charIdx >= lineText.length) {
       const t = setTimeout(() => {
         if (lineIdx + 1 >= snippet.lines.length) {
           setPhase("pause");
         } else {
-          setLineIdx(l => l + 1);
+          setLineIdx((l) => l + 1);
           setCharIdx(0);
         }
       }, 60);
@@ -385,19 +581,30 @@ function CodeTerminal() {
     }
     // type next char – vary speed for realism
     const speed = lineText[charIdx] === " " ? 18 : Math.random() < 0.08 ? 90 : 28;
-    const t = setTimeout(() => setCharIdx(c => c + 1), speed);
+    const t = setTimeout(() => setCharIdx((c) => c + 1), speed);
     return () => clearTimeout(t);
   }, [phase, lineIdx, charIdx, snippet, sIdx]);
 
   // render a fully visible line
   const renderFull = (line: CodeLine, li: number) => (
     <div key={li} className="flex">
-      <span style={{ color: C.cmt, minWidth: "2rem", textAlign: "right", paddingRight: "1rem", userSelect: "none", opacity: 0.35 }}>
+      <span
+        style={{
+          color: C.cmt,
+          minWidth: "2rem",
+          textAlign: "right",
+          paddingRight: "1rem",
+          userSelect: "none",
+          opacity: 0.35,
+        }}
+      >
         {li + 1}
       </span>
       <span>
         {line.map((tk, ti) => (
-          <span key={ti} style={{ color: tk.cls }}>{tk.text}</span>
+          <span key={ti} style={{ color: tk.cls }}>
+            {tk.text}
+          </span>
         ))}
       </span>
     </div>
@@ -412,20 +619,39 @@ function CodeTerminal() {
       const t = line[ti];
       const visible = t.text.slice(0, remaining);
       remaining -= t.text.length;
-      spans.push(<span key={ti} style={{ color: t.cls }}>{visible}</span>);
+      spans.push(
+        <span key={ti} style={{ color: t.cls }}>
+          {visible}
+        </span>,
+      );
     }
     return (
       <div key={li} className="flex">
-        <span style={{ color: C.cmt, minWidth: "2rem", textAlign: "right", paddingRight: "1rem", userSelect: "none", opacity: 0.35 }}>
+        <span
+          style={{
+            color: C.cmt,
+            minWidth: "2rem",
+            textAlign: "right",
+            paddingRight: "1rem",
+            userSelect: "none",
+            opacity: 0.35,
+          }}
+        >
           {li + 1}
         </span>
         <span>
           {spans}
-          <span style={{
-            display: "inline-block", width: "2px", height: "1em",
-            background: C.acc, verticalAlign: "text-bottom",
-            opacity: blink ? 1 : 0, transition: "opacity 0.1s"
-          }} />
+          <span
+            style={{
+              display: "inline-block",
+              width: "2px",
+              height: "1em",
+              background: C.acc,
+              verticalAlign: "text-bottom",
+              opacity: blink ? 1 : 0,
+              transition: "opacity 0.1s",
+            }}
+          />
         </span>
       </div>
     );
@@ -434,54 +660,79 @@ function CodeTerminal() {
   return (
     <div className="relative select-none">
       {/* ambient glow */}
-      <div className="absolute inset-0 -m-10 rounded-[3rem] blur-3xl pointer-events-none"
-        style={{ background: `radial-gradient(ellipse at 60% 40%, ${snippet.badgeColor}25 0%, transparent 65%)`, transition: "background 0.6s" }} />
+      <div
+        className="absolute inset-0 -m-10 rounded-[3rem] blur-3xl pointer-events-none"
+        style={{
+          background: `radial-gradient(ellipse at 60% 40%, ${snippet.badgeColor}25 0%, transparent 65%)`,
+          transition: "background 0.6s",
+        }}
+      />
 
       {/* floating badges */}
       {[
         { text: "🇦🇴 Made in Angola", pos: "-top-5 right-4", delay: "0s" },
         { text: "✓ Entregue a tempo", pos: "-bottom-5 left-4", delay: "0.5s" },
         { text: "⚡ Alta performance", pos: "-left-5 top-1/3", delay: "1s" },
-      ].map(b => (
-        <div key={b.text}
+      ].map((b) => (
+        <div
+          key={b.text}
           className={`absolute ${b.pos} z-20 rounded-full border border-white/20 bg-white/8 backdrop-blur-md px-3 py-1.5 text-[11px] font-semibold text-white/80 shadow-lg whitespace-nowrap`}
-          style={{ animation: "tkBadge 3.2s ease-in-out infinite", animationDelay: b.delay }}>
+          style={{ animation: "tkBadge 3.2s ease-in-out infinite", animationDelay: b.delay }}
+        >
           {b.text}
         </div>
       ))}
 
       {/* editor window */}
-      <div className="relative overflow-hidden rounded-2xl border border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.6)]"
-        style={{ background: "oklch(0.11 0.02 258)", transition: "opacity 0.55s", opacity }}>
-
+      <div
+        className="relative overflow-hidden rounded-2xl border border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.6)]"
+        style={{ background: "oklch(0.11 0.02 258)", transition: "opacity 0.55s", opacity }}
+      >
         {/* title bar */}
-        <div className="flex items-center gap-3 px-4 py-2.5 border-b border-white/8"
-          style={{ background: "oklch(0.14 0.02 258)" }}>
+        <div
+          className="flex items-center gap-3 px-4 py-2.5 border-b border-white/8"
+          style={{ background: "oklch(0.14 0.02 258)" }}
+        >
           <div className="flex gap-1.5">
-            {["#f87171","#fbbf24","#4ade80"].map(c => (
-              <div key={c} className="h-3 w-3 rounded-full" style={{ background: c, opacity: 0.75 }} />
+            {["#f87171", "#fbbf24", "#4ade80"].map((c) => (
+              <div
+                key={c}
+                className="h-3 w-3 rounded-full"
+                style={{ background: c, opacity: 0.75 }}
+              />
             ))}
           </div>
           {/* tabs */}
           {codeSnippets.map((s, i) => (
-            <div key={s.file}
+            <div
+              key={s.file}
               className="px-3 py-1 rounded-md text-[11px] font-mono transition-all duration-300"
               style={{
                 background: i === sIdx ? "oklch(0.18 0.03 258)" : "transparent",
                 color: i === sIdx ? C.txt : C.cmt,
                 borderBottom: i === sIdx ? `1px solid ${s.badgeColor}` : "1px solid transparent",
-              }}>
+              }}
+            >
               {s.file}
             </div>
           ))}
-          <div className="ml-auto rounded-full px-2 py-0.5 text-[10px] font-bold"
-            style={{ background: `${snippet.badgeColor}25`, color: snippet.badgeColor, border: `1px solid ${snippet.badgeColor}40` }}>
+          <div
+            className="ml-auto rounded-full px-2 py-0.5 text-[10px] font-bold"
+            style={{
+              background: `${snippet.badgeColor}25`,
+              color: snippet.badgeColor,
+              border: `1px solid ${snippet.badgeColor}40`,
+            }}
+          >
             {snippet.badge}
           </div>
         </div>
 
         {/* code area */}
-        <div className="p-4 font-mono text-[12px] leading-[1.75] overflow-hidden" style={{ minHeight: "280px" }}>
+        <div
+          className="p-4 font-mono text-[12px] leading-[1.75] overflow-hidden"
+          style={{ minHeight: "280px" }}
+        >
           {snippet.lines.map((line, li) => {
             if (li < lineIdx) return renderFull(line, li);
             if (li === lineIdx) return renderPartial(line, li, charIdx);
@@ -490,11 +741,15 @@ function CodeTerminal() {
         </div>
 
         {/* status bar */}
-        <div className="flex items-center gap-4 px-4 py-1.5 border-t border-white/8 text-[10px] font-mono"
-          style={{ background: snippet.badgeColor, color: "oklch(0.1 0.02 258)" }}>
+        <div
+          className="flex items-center gap-4 px-4 py-1.5 border-t border-white/8 text-[10px] font-mono"
+          style={{ background: snippet.badgeColor, color: "oklch(0.1 0.02 258)" }}
+        >
           <span className="font-bold">{snippet.lang}</span>
           <span className="opacity-70">UTF-8</span>
-          <span className="opacity-70">Ln {lineIdx + 1}, Col {charIdx + 1}</span>
+          <span className="opacity-70">
+            Ln {lineIdx + 1}, Col {charIdx + 1}
+          </span>
           <span className="ml-auto font-bold">ByteKwanza © 2026</span>
         </div>
       </div>
@@ -509,10 +764,7 @@ function CodeTerminal() {
   );
 }
 
-
-
 function Landing() {
-
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Nav */}
@@ -525,11 +777,21 @@ function Landing() {
             </span>
           </a>
           <nav className="hidden md:flex items-center gap-8 text-sm text-muted-foreground">
-            <a href="#servicos" className="hover:text-foreground transition-colors">Serviços</a>
-            <a href="#extras" className="hover:text-foreground transition-colors">Extras</a>
-            <a href="#portfolio" className="hover:text-foreground transition-colors">Portfólio</a>
-            <a href="#porque" className="hover:text-foreground transition-colors">Porquê nós</a>
-            <a href="#contacto" className="hover:text-foreground transition-colors">Contacto</a>
+            <a href="#servicos" className="hover:text-foreground transition-colors">
+              Serviços
+            </a>
+            <a href="#extras" className="hover:text-foreground transition-colors">
+              Extras
+            </a>
+            <a href="#portfolio" className="hover:text-foreground transition-colors">
+              Portfólio
+            </a>
+            <a href="#porque" className="hover:text-foreground transition-colors">
+              Porquê nós
+            </a>
+            <a href="#contacto" className="hover:text-foreground transition-colors">
+              Contacto
+            </a>
           </nav>
           <a
             href={WHATSAPP_URL}
@@ -552,11 +814,12 @@ function Landing() {
               Catálogo de Serviços 2026
             </span>
             <h1 className="mt-5 text-4xl md:text-6xl font-extrabold leading-[1.05] tracking-tight">
-              Soluções digitais que <span className="text-gradient-brand">transformam</span> o seu negócio.
+              Soluções digitais que <span className="text-gradient-brand">transformam</span> o seu
+              negócio.
             </h1>
             <p className="mt-5 text-base md:text-lg text-white/70 max-w-xl">
-              Desenvolvimento web, e-commerce, portais e sistemas personalizados. Uma
-              equipa angolana com conhecimento local e tecnologia de ponta.
+              Desenvolvimento web, e-commerce, portais e sistemas personalizados. Uma equipa
+              angolana com conhecimento local e tecnologia de ponta.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a
@@ -582,7 +845,9 @@ function Landing() {
                 { k: "AO", v: "Made in Angola" },
               ].map((s) => (
                 <div key={s.v}>
-                  <dt className="text-2xl font-display font-bold text-[oklch(0.85_0.1_78)]">{s.k}</dt>
+                  <dt className="text-2xl font-display font-bold text-[oklch(0.85_0.1_78)]">
+                    {s.k}
+                  </dt>
                   <dd className="text-xs uppercase tracking-wider text-white/60 mt-1">{s.v}</dd>
                 </div>
               ))}
@@ -595,10 +860,15 @@ function Landing() {
       {/* Services */}
       <section id="servicos" className="mx-auto max-w-7xl px-4 sm:px-6 py-24">
         <div className="max-w-2xl">
-          <p className="text-sm font-semibold uppercase tracking-widest text-[oklch(0.55_0.15_258)]">Os nossos serviços</p>
-          <h2 className="mt-3 text-3xl md:text-5xl font-bold">Da ideia ao lançamento — cuidamos de tudo.</h2>
+          <p className="text-sm font-semibold uppercase tracking-widest text-[oklch(0.55_0.15_258)]">
+            Os nossos serviços
+          </p>
+          <h2 className="mt-3 text-3xl md:text-5xl font-bold">
+            Da ideia ao lançamento — cuidamos de tudo.
+          </h2>
           <p className="mt-4 text-muted-foreground">
-            Escolha o plano que melhor se adapta ao seu projecto. Todos os preços em Kwanzas (AOA) e são indicativos.
+            Escolha o plano que melhor se adapta ao seu projecto. Todos os preços em Kwanzas (AOA) e
+            são indicativos.
           </p>
         </div>
 
@@ -651,7 +921,8 @@ function Landing() {
                     <Clock className="h-3.5 w-3.5" /> {s.deadline}
                   </p>
                   <p className="text-muted-foreground">
-                    <span className="font-semibold text-foreground/80">Ideal para: </span>{s.ideal}
+                    <span className="font-semibold text-foreground/80">Ideal para: </span>
+                    {s.ideal}
                   </p>
                 </div>
 
@@ -675,10 +946,15 @@ function Landing() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 py-24">
           <div className="grid md:grid-cols-2 gap-12 items-start">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-widest text-[oklch(0.55_0.15_258)]">Serviços adicionais</p>
-              <h2 className="mt-3 text-3xl md:text-4xl font-bold">Complemente a sua presença digital.</h2>
+              <p className="text-sm font-semibold uppercase tracking-widest text-[oklch(0.55_0.15_258)]">
+                Serviços adicionais
+              </p>
+              <h2 className="mt-3 text-3xl md:text-4xl font-bold">
+                Complemente a sua presença digital.
+              </h2>
               <p className="mt-4 text-muted-foreground max-w-md">
-                Serviços essenciais para manter a sua plataforma no ar, encontrável e alinhada à sua marca.
+                Serviços essenciais para manter a sua plataforma no ar, encontrável e alinhada à sua
+                marca.
               </p>
             </div>
             <div className="rounded-2xl border border-border bg-card divide-y divide-border overflow-hidden">
@@ -696,7 +972,9 @@ function Landing() {
       {/* Portfolio */}
       <section id="portfolio" className="mx-auto max-w-7xl px-4 sm:px-6 py-24">
         <div className="text-center max-w-2xl mx-auto">
-          <p className="text-sm font-semibold uppercase tracking-widest text-[oklch(0.55_0.15_258)]">Trabalhos realizados</p>
+          <p className="text-sm font-semibold uppercase tracking-widest text-[oklch(0.55_0.15_258)]">
+            Trabalhos realizados
+          </p>
           <h2 className="mt-3 text-3xl md:text-5xl font-bold">Sites que já lançámos.</h2>
           <p className="mt-4 text-muted-foreground">
             Projectos reais desenvolvidos pela ByteKwanza — clique para visitar.
@@ -732,7 +1010,10 @@ function Landing() {
                   </span>
                 </div>
                 {/* Colour bar top */}
-                <div className="absolute top-0 left-0 right-0 h-1" style={{ background: p.accent }} />
+                <div
+                  className="absolute top-0 left-0 right-0 h-1"
+                  style={{ background: p.accent }}
+                />
               </div>
 
               {/* Info */}
@@ -764,14 +1045,19 @@ function Landing() {
       {/* Why us */}
       <section id="porque" className="mx-auto max-w-7xl px-4 sm:px-6 py-24">
         <div className="text-center max-w-2xl mx-auto">
-          <p className="text-sm font-semibold uppercase tracking-widest text-[oklch(0.55_0.15_258)]">Porquê a ByteKwanza</p>
+          <p className="text-sm font-semibold uppercase tracking-widest text-[oklch(0.55_0.15_258)]">
+            Porquê a ByteKwanza
+          </p>
           <h2 className="mt-3 text-3xl md:text-5xl font-bold">Parceiros do seu sucesso digital.</h2>
         </div>
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {reasons.map((r, i) => {
             const Icon = r.icon;
             return (
-              <div key={r.title} className="rounded-2xl border border-border bg-card p-7 hover:border-[oklch(0.72_0.13_78)]/50 transition">
+              <div
+                key={r.title}
+                className="rounded-2xl border border-border bg-card p-7 hover:border-[oklch(0.72_0.13_78)]/50 transition"
+              >
                 <div className="flex items-center gap-4">
                   <span className="font-display text-3xl font-bold text-[oklch(0.72_0.13_78)]/70">
                     0{i + 1}
@@ -793,13 +1079,15 @@ function Landing() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 py-24 md:py-32">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-widest text-[oklch(0.85_0.1_78)]">Contacte-nos</p>
+              <p className="text-sm font-semibold uppercase tracking-widest text-[oklch(0.85_0.1_78)]">
+                Contacte-nos
+              </p>
               <h2 className="mt-3 text-3xl md:text-5xl font-bold leading-tight">
                 Vamos transformar a sua ideia numa realidade digital.
               </h2>
               <p className="mt-5 text-white/70 max-w-lg">
-                Peça já o seu orçamento gratuito. A nossa equipa está pronta para analisar
-                o seu projecto e propor a melhor solução tecnológica.
+                Peça já o seu orçamento gratuito. A nossa equipa está pronta para analisar o seu
+                projecto e propor a melhor solução tecnológica.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
@@ -830,7 +1118,12 @@ function Landing() {
                   </div>
                   <div>
                     <p className="text-xs uppercase tracking-widest text-white/50">WhatsApp</p>
-                    <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="mt-1 block text-lg font-semibold hover:text-[oklch(0.85_0.1_78)]">
+                    <a
+                      href={WHATSAPP_URL}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-1 block text-lg font-semibold hover:text-[oklch(0.85_0.1_78)]"
+                    >
                       +244 937 998 152
                     </a>
                   </div>
@@ -841,15 +1134,18 @@ function Landing() {
                   </div>
                   <div className="min-w-0">
                     <p className="text-xs uppercase tracking-widest text-white/50">Email</p>
-                    <a href={`mailto:${EMAIL}`} className="mt-1 block text-lg font-semibold break-all hover:text-[oklch(0.85_0.1_78)]">
+                    <a
+                      href={`mailto:${EMAIL}`}
+                      className="mt-1 block text-lg font-semibold break-all hover:text-[oklch(0.85_0.1_78)]"
+                    >
                       {EMAIL}
                     </a>
                   </div>
                 </li>
               </ul>
               <p className="mt-8 text-xs text-white/50">
-                Todos os preços são expressos em Kwanzas (AOA) e podem ser negociados
-                mediante o detalhe do projecto.
+                Todos os preços são expressos em Kwanzas (AOA) e podem ser negociados mediante o
+                detalhe do projecto.
               </p>
             </div>
           </div>
@@ -866,9 +1162,7 @@ function Landing() {
           <p className="text-xs text-muted-foreground">
             © {new Date().getFullYear()} ByteKwanza — Soluções digitais feitas em Angola.
           </p>
-          <p className="text-xs text-muted-foreground/60">
-            NIF: 5003198294
-          </p>
+          <p className="text-xs text-muted-foreground/60">NIF: 5003198294</p>
         </div>
       </footer>
     </div>
