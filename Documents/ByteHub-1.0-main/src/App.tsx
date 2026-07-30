@@ -23,15 +23,33 @@ import { LoginPanel } from './components/Auth/LoginPanel';
 import { CredentialsManagerModal } from './components/Auth/CredentialsManagerModal';
 
 import { fetchTasksFromSupabase, saveTaskToSupabase, deleteTaskFromSupabase } from './services/supabaseSync';
+import { resetSupabaseInstance } from './lib/supabase';
 
 export default function App() {
   const [currentSection, setCurrentSection] = useState<MainNavSection>('planeamento');
-  const [reports, setReports] = useState<MetricReport[]>(INITIAL_REPORTS);
-  const [tasks, setTasks] = useState<TaskItem[]>(INITIAL_TASKS);
-  const [posts, setPosts] = useState<SocialPostItem[]>(INITIAL_POSTS);
+  const [reports, setReports] = useState<MetricReport[]>(() => {
+    try {
+      const saved = localStorage.getItem('girassol_reports');
+      return saved ? JSON.parse(saved) : INITIAL_REPORTS;
+    } catch { return INITIAL_REPORTS; }
+  });
+  const [tasks, setTasks] = useState<TaskItem[]>(() => {
+    try {
+      const saved = localStorage.getItem('girassol_tasks');
+      return saved ? JSON.parse(saved) : INITIAL_TASKS;
+    } catch { return INITIAL_TASKS; }
+  });
+  const [posts, setPosts] = useState<SocialPostItem[]>(() => {
+    try {
+      const saved = localStorage.getItem('girassol_posts');
+      return saved ? JSON.parse(saved) : INITIAL_POSTS;
+    } catch { return INITIAL_POSTS; }
+  });
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>(() => {
-    const saved = localStorage.getItem('girassol_team_members');
-    return saved ? JSON.parse(saved) : TEAM_MEMBERS;
+    try {
+      const saved = localStorage.getItem('girassol_team_members');
+      return saved ? JSON.parse(saved) : TEAM_MEMBERS;
+    } catch { return TEAM_MEMBERS; }
   });
 
   // Load tasks from Supabase on startup if configured
@@ -68,10 +86,22 @@ export default function App() {
   const [postDefaultDay, setPostDefaultDay] = useState<DayOfWeek>('Segunda-feira');
   const [selectedPostPreview, setSelectedPostPreview] = useState<SocialPostItem | null>(null);
 
-  // Persist team members & current user
+  // Persist all data to localStorage so it survives page refresh
   useEffect(() => {
     localStorage.setItem('girassol_team_members', JSON.stringify(teamMembers));
   }, [teamMembers]);
+
+  useEffect(() => {
+    localStorage.setItem('girassol_tasks', JSON.stringify(tasks));
+  }, [tasks]);
+
+  useEffect(() => {
+    localStorage.setItem('girassol_posts', JSON.stringify(posts));
+  }, [posts]);
+
+  useEffect(() => {
+    localStorage.setItem('girassol_reports', JSON.stringify(reports));
+  }, [reports]);
 
   useEffect(() => {
     if (currentUser) {
@@ -95,6 +125,8 @@ export default function App() {
     if (currentUser && currentUser.id === updatedMember.id) {
       setCurrentUser(updatedMember);
     }
+    // Reset Supabase instance so new credentials take effect immediately
+    resetSupabaseInstance();
   };
 
   // Handlers for Data Reset
@@ -103,6 +135,10 @@ export default function App() {
     setTasks([...INITIAL_TASKS]);
     setPosts([...INITIAL_POSTS]);
     setTeamMembers([...TEAM_MEMBERS]);
+    localStorage.removeItem('girassol_reports');
+    localStorage.removeItem('girassol_tasks');
+    localStorage.removeItem('girassol_posts');
+    localStorage.removeItem('girassol_team_members');
   };
 
   const handleResetUsers = () => {

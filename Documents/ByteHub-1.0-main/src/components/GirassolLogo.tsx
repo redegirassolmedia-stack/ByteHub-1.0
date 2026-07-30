@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const DEFAULT_LOGO_URL = '/girassol_logo.jpg';
+const DEFAULT_LOGO_URL = '/girassol_logo.png';
 
 interface GirassolLogoProps {
   variant?: 'full' | 'icon' | 'white-text';
