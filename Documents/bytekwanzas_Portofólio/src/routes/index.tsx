@@ -55,7 +55,7 @@ export const Route = createFileRoute("/")({
   component: Landing,
 });
 
-const WHATSAPP = "937998152";
+const WHATSAPP = "957455005";
 const WHATSAPP_URL = `https://wa.me/244${WHATSAPP}?text=${encodeURIComponent(
   "Olá ByteKwanza! Gostaria de um orçamento.",
 )}`;
@@ -1124,7 +1124,7 @@ function Landing() {
                       rel="noreferrer"
                       className="mt-1 block text-lg font-semibold hover:text-[oklch(0.85_0.1_78)]"
                     >
-                      +244 937 998 152
+                      +244 957 455 005
                     </a>
                   </div>
                 </li>
