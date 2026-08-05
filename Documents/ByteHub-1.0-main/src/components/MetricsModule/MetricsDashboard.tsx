@@ -8,7 +8,6 @@ import {
   generateAutomatedRecommendations,
   PLATFORM_NAMES
 } from '../../utils/metricsCalculator';
-import { INTERNAL_PRODUCTION_STATS } from '../../data/initialData';
 import { MetricsCharts } from './MetricsCharts';
 import {
   BarChart3,
@@ -251,7 +250,7 @@ export const MetricsDashboard: React.FC<MetricsDashboardProps> = ({
         </div>
 
         <div className="text-slate-500 text-[11px] font-medium">
-          Produção Interna: <strong className="text-slate-900">{INTERNAL_PRODUCTION_STATS.completedTasks} Tarefas Concluídas</strong>, <strong className="text-slate-900">{INTERNAL_PRODUCTION_STATS.producedContent} Conteúdos Produzidos</strong>
+          Métricas calculadas dinamicamente com base nos registos da equipa
         </div>
       </div>
 

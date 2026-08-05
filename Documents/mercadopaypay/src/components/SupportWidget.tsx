@@ -16,19 +16,39 @@ interface Message {
 const SupportWidget = () => {
     const { user } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
-    const [messages, setMessages] = useState<Message[]>([
-        {
-            id: "1",
-            text: "Olá! Sou o Assistente IA do Mercado PayPay. Como posso te ajudar hoje?",
-            sender: "ai",
-            timestamp: new Date(),
-        },
-    ]);
+    const [messages, setMessages] = useState<Message[]>([]);
     const [inputValue, setInputValue] = useState("");
     const [isTyping, setIsTyping] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
 
+    // Persistence
     useEffect(() => {
+        const savedMessages = localStorage.getItem("support_messages");
+        if (savedMessages) {
+            try {
+                const parsed = JSON.parse(savedMessages);
+                // Convert string dates back to Date objects
+                setMessages(parsed.map((m: any) => ({ ...m, timestamp: new Date(m.timestamp) })));
+            } catch (e) {
+                console.error("Error loading chat messages", e);
+            }
+        } else {
+            // Default first message
+            setMessages([
+                {
+                    id: "1",
+                    text: "Olá! Sou o Assistente IA do Mercado PayPay. Como posso te ajudar hoje?",
+                    sender: "ai",
+                    timestamp: new Date(),
+                },
+            ]);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (messages.length > 0) {
+            localStorage.setItem("support_messages", JSON.stringify(messages));
+        }
         if (scrollRef.current) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
@@ -63,12 +83,28 @@ const SupportWidget = () => {
 
     const getSimulatedResponse = (query: string) => {
         const q = query.toLowerCase();
-        if (q.includes("preço") || q.includes("valor")) return "Você pode consultar os valores na nossa página de Planos. Temos opções para todos os tamanhos de negócio!";
+        if (q.includes("preço") || q.includes("valor")) return "Você pode consultar os valores na nossa página de Planos. Temos opções para todos os tamanhos de negócio! Atualmente oferecemos 3 meses grátis para novos usuários.";
         if (q.includes("anunciar")) return "Para anunciar, basta clicar no botão azul 'Anunciar' no topo da página. É rápido e fácil!";
         if (q.includes("pagamento") || q.includes("pagar")) return "Aceitamos pagamentos via Multicaixa (Referência), PayPay e Airtm. Confira os detalhes na página de Planos.";
         if (q.includes("admin")) return "O Painel Admin está disponível apenas para administradores autorizados. Se você for um, clique no seu perfil para acessá-lo.";
-        return "Entendi! Sou uma IA em treinamento, mas posso te ajudar com dúvidas básicas sobre anúncios, planos e pagamentos. Como posso ser útil?";
+        if (q.includes("ajuda") || q.includes("suporte")) return "Você pode entrar em contato com nosso suporte via email em suporte@mercadopaypay.com ou usar esta IA para dúvidas rápidas.";
+        if (q.includes("seguro") || q.includes("segurança")) return "Sua segurança é nossa prioridade. Recomendamos sempre encontrar compradores/vendedores em locais públicos e nunca fazer pagamentos antecipados sem ver o produto.";
+        return "Entendi! Sou uma IA em treinamento focada no Mercado PayPay. Posso te ajudar com dúvidas sobre anúncios, planos, pagamentos e segurança. Como posso ser útil?";
     };
+
+    const clearChat = () => {
+        if (confirm("Deseja apagar o histórico de conversa?")) {
+            const initialMessage = {
+                id: "1",
+                text: "Histórico limpo. Como posso te ajudar agora?",
+                sender: "ai" as const,
+                timestamp: new Date(),
+            };
+            setMessages([initialMessage]);
+            localStorage.setItem("support_messages", JSON.stringify([initialMessage]));
+        }
+    };
+
 
     return (
         <div className="fixed bottom-6 right-6 z-[100] flex flex-col items-end">

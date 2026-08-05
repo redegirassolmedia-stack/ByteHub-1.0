@@ -6,7 +6,7 @@ import { useRegion } from "@/hooks/useRegion";
 
 const FeaturedListings = () => {
   const navigate = useNavigate();
-  const { selectedCountry } = useRegion();
+  const { selectedCountry, formatPrice } = useRegion();
   const [listings, setListings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -59,7 +59,7 @@ const FeaturedListings = () => {
             <ListingCard
               id={listing.id}
               title={listing.title}
-              price={`R$ ${Number(listing.price).toLocaleString("pt-BR")}`}
+              price={formatPrice(listing.price)}
               location={[listing.city, listing.state].filter(Boolean).join(", ")}
               time={new Date(listing.created_at).toLocaleDateString("pt-BR")}
               image={listing.images?.[0] || "/placeholder.svg"}

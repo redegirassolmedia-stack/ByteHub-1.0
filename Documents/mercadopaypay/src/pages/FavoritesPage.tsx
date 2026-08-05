@@ -4,10 +4,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import Header from "@/components/Header";
 import ListingCard from "@/components/ListingCard";
+import { useRegion } from "@/hooks/useRegion";
 
 const FavoritesPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { formatPrice } = useRegion();
   const [listings, setListings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -44,7 +46,7 @@ const FavoritesPage = () => {
               <div key={listing.id} onClick={() => navigate(`/anuncio/${listing.id}`)} className="cursor-pointer">
                 <ListingCard
                   title={listing.title}
-                  price={`R$ ${Number(listing.price).toLocaleString("pt-BR")}`}
+                  price={formatPrice(listing.price)}
                   location={[listing.city, listing.state].filter(Boolean).join(", ")}
                   time={new Date(listing.created_at).toLocaleDateString("pt-BR")}
                   image={listing.images?.[0] || "/placeholder.svg"}

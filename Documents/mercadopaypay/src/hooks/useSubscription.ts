@@ -28,7 +28,7 @@ export const useSubscription = () => {
             const { data: profile } = await supabase
                 .from("profiles")
                 .select("subscription_tier, trial_expires_at")
-                .eq("user_id", user.id)
+                .eq("id", user.id)
                 .single();
 
             if (profile) {
@@ -62,7 +62,7 @@ export const useSubscription = () => {
                 subscription_tier: "premium",
                 trial_expires_at: threeMonthsFromNow.toISOString(),
             })
-            .eq("user_id", user.id);
+            .eq("id", user.id);
 
         if (error) throw error;
 
@@ -70,7 +70,7 @@ export const useSubscription = () => {
         const { data: profile } = await supabase
             .from("profiles")
             .select("subscription_tier, trial_expires_at")
-            .eq("user_id", user.id)
+            .eq("id", user.id)
             .single();
 
         if (profile) {
@@ -88,5 +88,5 @@ export const useSubscription = () => {
         }
     };
 
-    return { ...status, startTrial };
+    return { ...status, startTrial, user };
 };

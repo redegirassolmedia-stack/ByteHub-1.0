@@ -10,7 +10,7 @@ import { useRegion } from "@/hooks/useRegion";
 
 const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { selectedCountry } = useRegion();
+  const { selectedCountry, formatPrice } = useRegion();
   const navigate = useNavigate();
   const [listings, setListings] = useState<any[]>([]);
   const [categories, setCategories] = useState<{ id: string; name: string; slug: string }[]>([]);
@@ -128,7 +128,7 @@ const SearchPage = () => {
               <div key={listing.id} onClick={() => navigate(`/anuncio/${listing.id}`)} className="cursor-pointer">
                 <ListingCard
                   title={listing.title}
-                  price={`R$ ${Number(listing.price).toLocaleString("pt-BR")}`}
+                  price={formatPrice(listing.price)}
                   location={[listing.city, listing.state].filter(Boolean).join(", ")}
                   time={new Date(listing.created_at).toLocaleDateString("pt-BR")}
                   image={listing.images?.[0] || "/placeholder.svg"}

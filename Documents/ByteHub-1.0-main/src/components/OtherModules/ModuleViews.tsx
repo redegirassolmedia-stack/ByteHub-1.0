@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MainNavSection, TaskItem, TaskStatus, TeamMember, SocialPostItem, PostStatus, DayOfWeek } from '../../types';
-import { CONTENT_PROGRAMS, INTERNAL_PRODUCTION_STATS } from '../../data/initialData';
 import { WeeklyPostPlanner } from '../SocialPlanner/WeeklyPostPlanner';
+import { EditorialCalendar } from '../SocialPlanner/EditorialCalendar';
 import { GirassolLogo } from '../GirassolLogo';
 import {
   CheckSquare,
@@ -51,6 +51,7 @@ interface ModuleViewProps {
   tasks: TaskItem[];
   posts: SocialPostItem[];
   teamMembers: TeamMember[];
+  currentUser?: TeamMember;
   onOpenNewTaskModal: (defaultSec?: MainNavSection) => void;
   onUpdateTaskStatus: (taskId: string, newStatus: TaskStatus) => void;
   onDeleteTask: (taskId: string) => void;
@@ -322,6 +323,7 @@ export const ModuleViews: React.FC<ModuleViewProps> = ({
   tasks,
   posts,
   teamMembers,
+  currentUser,
   onOpenNewTaskModal,
   onUpdateTaskStatus,
   onDeleteTask,
@@ -334,11 +336,11 @@ export const ModuleViews: React.FC<ModuleViewProps> = ({
   onSelectPostForPreview,
   onOpenCredentialsModal
 }) => {
+  const isAdmin = !!currentUser?.isAdmin;
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatusFilter, setSelectedStatusFilter] = useState<string>('todos');
-
-  // Render Weekly Post Planner for Planeamento, Calendário Editorial & Redes Sociais
-  if (section === 'planeamento' || section === 'calendario' || section === 'redes_sociais') {
+  // Planeamento de Posts — Vista Semanal por Dias (Kanban Semanal)
+  if (section === 'planeamento') {
     return (
       <WeeklyPostPlanner
         posts={posts}
@@ -348,6 +350,215 @@ export const ModuleViews: React.FC<ModuleViewProps> = ({
         onDeletePost={onDeletePost}
         onSelectPostForPreview={onSelectPostForPreview}
       />
+    );
+  }
+
+  // Calendário Editorial — Vista Mensal Cronológica e Grelha
+  if (section === 'calendario') {
+    return (
+      <EditorialCalendar
+        posts={posts}
+        onOpenNewPostModal={onOpenNewPostModal}
+        onUpdatePostStatus={onUpdatePostStatus}
+        onDeletePost={onDeletePost}
+        onSelectPostForPreview={onSelectPostForPreview}
+      />
+    );
+  }
+
+  // 📱 GESTÃO DE CANAIS POR REDE SOCIAL
+  if (section === 'redes_sociais') {
+    const channels = [
+      {
+        id: 'instagram',
+        name: 'Instagram',
+        url: 'https://instagram.com',
+        color: 'from-pink-500 to-purple-600',
+        borderColor: 'border-pink-200',
+        textColor: 'text-pink-700',
+        icon: '📸',
+        postsThisWeek: posts.filter(p => p.platforms.includes('instagram')).length,
+        scheduled: posts.filter(p => p.platforms.includes('instagram') && p.status === 'Agendado').length,
+        published: posts.filter(p => p.platforms.includes('instagram') && p.status === 'Publicado').length,
+      },
+      {
+        id: 'facebook',
+        name: 'Facebook',
+        url: 'https://facebook.com',
+        color: 'from-blue-600 to-blue-700',
+        borderColor: 'border-blue-200',
+        textColor: 'text-blue-700',
+        icon: '👍',
+        postsThisWeek: posts.filter(p => p.platforms.includes('facebook')).length,
+        scheduled: posts.filter(p => p.platforms.includes('facebook') && p.status === 'Agendado').length,
+        published: posts.filter(p => p.platforms.includes('facebook') && p.status === 'Publicado').length,
+      },
+      {
+        id: 'tiktok',
+        name: 'TikTok',
+        url: 'https://tiktok.com',
+        color: 'from-slate-800 to-slate-950',
+        borderColor: 'border-slate-200',
+        textColor: 'text-slate-700',
+        icon: '🎵',
+        postsThisWeek: posts.filter(p => p.platforms.includes('tiktok')).length,
+        scheduled: posts.filter(p => p.platforms.includes('tiktok') && p.status === 'Agendado').length,
+        published: posts.filter(p => p.platforms.includes('tiktok') && p.status === 'Publicado').length,
+      },
+      {
+        id: 'youtube',
+        name: 'YouTube',
+        url: 'https://youtube.com',
+        color: 'from-red-600 to-red-700',
+        borderColor: 'border-red-200',
+        textColor: 'text-red-700',
+        icon: '▶️',
+        postsThisWeek: posts.filter(p => p.platforms.includes('youtube')).length,
+        scheduled: posts.filter(p => p.platforms.includes('youtube') && p.status === 'Agendado').length,
+        published: posts.filter(p => p.platforms.includes('youtube') && p.status === 'Publicado').length,
+      },
+      {
+        id: 'linkedin',
+        name: 'LinkedIn',
+        url: 'https://linkedin.com',
+        color: 'from-sky-700 to-sky-800',
+        borderColor: 'border-sky-200',
+        textColor: 'text-sky-700',
+        icon: '💼',
+        postsThisWeek: posts.filter(p => p.platforms.includes('linkedin')).length,
+        scheduled: posts.filter(p => p.platforms.includes('linkedin') && p.status === 'Agendado').length,
+        published: posts.filter(p => p.platforms.includes('linkedin') && p.status === 'Publicado').length,
+      },
+      {
+        id: 'x',
+        name: 'X (Twitter)',
+        url: 'https://x.com',
+        color: 'from-neutral-800 to-black',
+        borderColor: 'border-neutral-200',
+        textColor: 'text-neutral-700',
+        icon: '✖️',
+        postsThisWeek: posts.filter(p => p.platforms.includes('x')).length,
+        scheduled: posts.filter(p => p.platforms.includes('x') && p.status === 'Agendado').length,
+        published: posts.filter(p => p.platforms.includes('x') && p.status === 'Publicado').length,
+      },
+    ];
+
+    const totalPosts = posts.length;
+    const totalScheduled = posts.filter(p => p.status === 'Agendado').length;
+    const totalPublished = posts.filter(p => p.status === 'Publicado').length;
+
+    return (
+      <div className="space-y-6 pb-12">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs">
+          <div>
+            <h3 className="font-bold text-lg text-slate-900 flex items-center gap-2">
+              <Share2 className="w-5 h-5 text-indigo-600" />
+              <span>Gestão de Canais por Rede Social</span>
+            </h3>
+            <p className="text-xs text-slate-500">Estado, seguidores e plano de publicação de cada plataforma ativa</p>
+          </div>
+
+          <button
+            onClick={() => onOpenNewPostModal()}
+            className="px-4 py-2.5 text-xs font-black text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-xl flex items-center gap-1.5 shadow-md transition-all whitespace-nowrap"
+          >
+            <Plus className="w-4 h-4" />
+            <span>+ PLANEAR NOVO POST</span>
+          </button>
+        </div>
+
+        {/* Summary row */}
+        <div className="grid grid-cols-3 gap-4">
+          {[
+            { label: 'Posts Planeados', value: totalPosts, color: 'text-indigo-600', bg: 'bg-indigo-50', border: 'border-indigo-100' },
+            { label: 'Agendados', value: totalScheduled, color: 'text-amber-600', bg: 'bg-amber-50', border: 'border-amber-100' },
+            { label: 'Publicados', value: totalPublished, color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-100' },
+          ].map(stat => (
+            <div key={stat.label} className={`${stat.bg} ${stat.border} border rounded-2xl p-4 text-center`}>
+              <div className={`text-2xl font-black ${stat.color}`}>{stat.value}</div>
+              <div className="text-[11px] text-slate-500 font-semibold mt-1 uppercase tracking-wider">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Channel Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+          {channels.map(channel => (
+            <div key={channel.id} className={`bg-white rounded-2xl border ${channel.borderColor} shadow-2xs hover:shadow-md transition-all overflow-hidden flex flex-col`}>
+              {/* Card header with gradient */}
+              <div className={`bg-gradient-to-r ${channel.color} p-4 flex items-center justify-between`}>
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">{channel.icon}</span>
+                  <div>
+                    <h4 className="font-black text-white text-sm">{channel.name}</h4>
+                    <p className="text-white/70 text-[11px]">Consulte os Relatórios de Métricas para dados de seguidores</p>
+                  </div>
+                </div>
+                <a
+                  href={channel.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/80 hover:text-white text-[11px] font-bold flex items-center gap-1 border border-white/20 px-2 py-1 rounded-lg"
+                >
+                  <ExternalLink className="w-3 h-3" /> Abrir
+                </a>
+              </div>
+
+              {/* Card body */}
+              <div className="p-4 flex-1 space-y-3 text-xs">
+
+                {/* Post stats */}
+                <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100">
+                  <div className="text-center p-2 bg-slate-50 rounded-xl">
+                    <div className="font-black text-slate-900 text-base">{channel.postsThisWeek}</div>
+                    <div className="text-[10px] text-slate-500 uppercase tracking-wider">Planeados</div>
+                  </div>
+                  <div className="text-center p-2 bg-amber-50 rounded-xl">
+                    <div className="font-black text-amber-700 text-base">{channel.scheduled}</div>
+                    <div className="text-[10px] text-amber-600 uppercase tracking-wider">Agendados</div>
+                  </div>
+                  <div className="text-center p-2 bg-emerald-50 rounded-xl">
+                    <div className="font-black text-emerald-700 text-base">{channel.published}</div>
+                    <div className="text-[10px] text-emerald-600 uppercase tracking-wider">Publicados</div>
+                  </div>
+                </div>
+
+                {/* Posts list for this channel */}
+                {posts.filter(p => p.platforms.includes(channel.id as any)).length > 0 && (
+                  <div className="space-y-1.5 pt-1">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Próximos Posts</span>
+                    {posts
+                      .filter(p => p.platforms.includes(channel.id as any))
+                      .slice(0, 3)
+                      .map(p => (
+                        <div key={p.id} className="flex items-center justify-between p-2 bg-slate-50 rounded-lg border border-slate-100">
+                          <span className="truncate text-slate-700 font-medium flex-1 pr-2">{p.title}</span>
+                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap ${
+                            p.status === 'Publicado' ? 'bg-emerald-100 text-emerald-700' :
+                            p.status === 'Agendado' ? 'bg-amber-100 text-amber-700' :
+                            'bg-slate-100 text-slate-600'
+                          }`}>{p.status}</span>
+                        </div>
+                      ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Card footer */}
+              <div className="px-4 pb-4 pt-2 border-t border-slate-100 flex items-center justify-between">
+                <button
+                  onClick={() => onOpenNewPostModal()}
+                  className={`text-[11px] font-bold ${channel.textColor} hover:underline flex items-center gap-1`}
+                >
+                  <Plus className="w-3 h-3" /> Planear Post
+                </button>
+                <span className="text-[10px] text-slate-400 italic">Seguidores: ver Relatórios</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     );
   }
 
@@ -361,9 +572,7 @@ export const ModuleViews: React.FC<ModuleViewProps> = ({
     const matchesStatus =
       selectedStatusFilter === 'todos' || t.status === selectedStatusFilter;
 
-    const matchesSection = section === 'tarefas' || t.section === section;
-
-    return matchesSearch && matchesStatus && matchesSection;
+    return matchesSearch && matchesStatus;
   });
 
   const getPriorityBadge = (priority: string) => {
@@ -541,7 +750,8 @@ export const ModuleViews: React.FC<ModuleViewProps> = ({
           </div>
 
           <div className="flex items-center space-x-2">
-            {onOpenCredentialsModal && (
+            {/* Gerir Credenciais: apenas admin */}
+            {onOpenCredentialsModal && isAdmin && (
               <button
                 onClick={onOpenCredentialsModal}
                 className="px-3 py-2 text-xs font-bold text-slate-800 bg-amber-100 hover:bg-amber-200 rounded-xl border border-amber-300 flex items-center gap-1.5 transition-colors"
@@ -551,21 +761,32 @@ export const ModuleViews: React.FC<ModuleViewProps> = ({
               </button>
             )}
 
-            <button
-              onClick={onOpenResetModal}
-              className="px-3 py-2 text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 rounded-xl border border-rose-200 flex items-center gap-1.5 transition-colors"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>Resetar Utilizadores</span>
-            </button>
+            {/* Resetar: apenas admin */}
+            {isAdmin && (
+              <button
+                onClick={onOpenResetModal}
+                className="px-3 py-2 text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 rounded-xl border border-rose-200 flex items-center gap-1.5 transition-colors"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Resetar Utilizadores</span>
+              </button>
+            )}
 
-            <button
-              onClick={onOpenNewMemberModal}
-              className="px-4 py-2 text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-xl flex items-center gap-1.5 shadow-xs transition-all"
-            >
-              <UserPlus className="w-4 h-4" />
-              <span>+ Adicionar Utilizador</span>
-            </button>
+            {/* Adicionar: apenas admin */}
+            {isAdmin ? (
+              <button
+                onClick={onOpenNewMemberModal}
+                className="px-4 py-2 text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-xl flex items-center gap-1.5 shadow-xs transition-all"
+              >
+                <UserPlus className="w-4 h-4" />
+                <span>+ Adicionar Utilizador</span>
+              </button>
+            ) : (
+              <span className="px-3 py-2 text-[11px] text-slate-400 bg-slate-100 border border-slate-200 rounded-xl flex items-center gap-1.5">
+                <Lock className="w-3.5 h-3.5" />
+                Apenas Administrador
+              </span>
+            )}
           </div>
         </div>
 
@@ -601,13 +822,16 @@ export const ModuleViews: React.FC<ModuleViewProps> = ({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between">
                       <h4 className="font-bold text-sm text-slate-900 truncate">{m.name}</h4>
-                      <button
-                        onClick={() => onDeleteTeamMember(m.id)}
-                        title="Remover Utilizador"
-                        className="p-1 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded transition-colors"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      {/* Eliminar membro: apenas admin */}
+                      {isAdmin && (
+                        <button
+                          onClick={() => onDeleteTeamMember(m.id)}
+                          title="Remover Utilizador"
+                          className="p-1 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded transition-colors"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      )}
                     </div>
                     <div className="text-xs text-amber-600 font-semibold">{m.role}</div>
                     <div className="text-[11px] text-slate-500 truncate">{m.department} — {m.email}</div>
@@ -662,13 +886,19 @@ export const ModuleViews: React.FC<ModuleViewProps> = ({
 
               <div className="pt-3 border-t border-slate-200 flex items-center justify-between">
                 <span className="text-[11px] text-slate-500 font-medium">Estado: Operacional</span>
-                <button
-                  onClick={onOpenResetModal}
-                  className="px-4 py-2 text-xs font-black text-white bg-rose-600 hover:bg-rose-700 rounded-xl shadow-xs transition-colors flex items-center gap-2"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                  <span>RESETAR DADOS (INCLUINDO UTILIZADORES)</span>
-                </button>
+                {isAdmin ? (
+                  <button
+                    onClick={onOpenResetModal}
+                    className="px-4 py-2 text-xs font-black text-white bg-rose-600 hover:bg-rose-700 rounded-xl shadow-xs transition-colors flex items-center gap-2"
+                  >
+                    <RotateCcw className="w-4 h-4" />
+                    <span>RESETAR DADOS (INCLUINDO UTILIZADORES)</span>
+                  </button>
+                ) : (
+                  <span className="text-[11px] text-slate-400 flex items-center gap-1">
+                    <Lock className="w-3.5 h-3.5" /> Apenas Administrador
+                  </span>
+                )}
               </div>
             </div>
 
@@ -686,13 +916,19 @@ export const ModuleViews: React.FC<ModuleViewProps> = ({
 
               <div className="pt-3 border-t border-slate-200 flex items-center justify-between">
                 <span className="text-[11px] text-slate-500 font-medium">{teamMembers.length} Membros Registados</span>
-                <button
-                  onClick={onOpenNewMemberModal}
-                  className="px-4 py-2 text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-xl shadow-xs transition-colors flex items-center gap-1.5"
-                >
-                  <UserPlus className="w-4 h-4" />
-                  <span>+ Adicionar Utilizador</span>
-                </button>
+                {isAdmin ? (
+                  <button
+                    onClick={onOpenNewMemberModal}
+                    className="px-4 py-2 text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-xl shadow-xs transition-colors flex items-center gap-1.5"
+                  >
+                    <UserPlus className="w-4 h-4" />
+                    <span>+ Adicionar Utilizador</span>
+                  </button>
+                ) : (
+                  <span className="text-[11px] text-slate-400 flex items-center gap-1">
+                    <Lock className="w-3.5 h-3.5" /> Apenas Administrador
+                  </span>
+                )}
               </div>
             </div>
 
@@ -707,44 +943,67 @@ export const ModuleViews: React.FC<ModuleViewProps> = ({
     );
   }
 
-  // 📺 PROGRAMAS
-  if (section === 'programas') {
+  // 📺 BANCO DE CONTEÚDOS / PROGRAMAS — usa tarefas para gerir
+  if (section === 'banco_conteudos' || section === 'programas' as any) {
+    const contentTasks = tasks.filter(t => t.tag === 'Audiovisual' || t.tag === 'TV' || t.tag === 'Rádio' || t.tag === 'Digital' || t.tag === 'Podcast' || t.tag === 'Conteúdo');
     return (
       <div className="space-y-6 pb-12">
-        <div className="flex items-center justify-between bg-white p-5 rounded-2xl border border-slate-200">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs">
           <div>
             <h3 className="font-bold text-lg text-slate-900 flex items-center gap-2">
               <Tv2 className="w-5 h-5 text-indigo-600" />
-              <span>Catálogo de Programas (TV, Rádio e Digital)</span>
+              <span>Banco de Conteúdos e Programas</span>
             </h3>
-            <p className="text-xs text-slate-500">Grelha de programas transmitidos e publicados</p>
+            <p className="text-xs text-slate-500">Gestão de produção audiovisual, programas de TV, Rádio e Digital</p>
           </div>
           <button
-            onClick={() => onOpenNewTaskModal(section)}
-            className="px-4 py-2 text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-xl flex items-center gap-1.5 shadow-xs"
+            onClick={() => onOpenNewTaskModal('tarefas')}
+            className="px-4 py-2.5 text-xs font-black text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-xl flex items-center gap-1.5 shadow-md transition-all whitespace-nowrap"
           >
             <Plus className="w-4 h-4" />
-            <span>+ Criar Tarefa de Programa</span>
+            <span>+ NOVA TAREFA DE PRODUÇÃO</span>
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {CONTENT_PROGRAMS.map((prog) => (
-            <div key={prog.id} className="bg-white p-5 rounded-xl border border-slate-200 space-y-3 shadow-2xs">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold uppercase bg-slate-900 text-amber-400 px-2.5 py-1 rounded">
-                  {prog.channel}
-                </span>
-                <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                  {prog.status}
-                </span>
+        {contentTasks.length === 0 ? (
+          <div className="bg-white p-12 text-center rounded-2xl border-2 border-dashed border-slate-200 space-y-3">
+            <Tv2 className="w-10 h-10 text-slate-300 mx-auto" />
+            <h4 className="font-bold text-slate-700 text-sm">Sem tarefas de produção registadas</h4>
+            <p className="text-xs text-slate-500 max-w-sm mx-auto">
+              Crie tarefas de produção com a tag <strong>Audiovisual</strong>, <strong>TV</strong>, <strong>Rádio</strong> ou <strong>Digital</strong> para que apareçam aqui organizadas.
+            </p>
+            <button
+              onClick={() => onOpenNewTaskModal('tarefas')}
+              className="px-4 py-2 text-xs font-black text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-xl shadow-xs"
+            >
+              + Criar Tarefa de Produção
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {contentTasks.map((task) => (
+              <div key={task.id} className="bg-white p-5 rounded-xl border border-slate-200 space-y-3 shadow-2xs hover:shadow-md transition-all">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase bg-slate-900 text-amber-400 px-2.5 py-1 rounded">
+                    {task.tag}
+                  </span>
+                  <span className={`text-xs font-bold px-2 py-0.5 rounded border ${
+                    task.status === 'Concluído' ? 'bg-emerald-100 text-emerald-800 border-emerald-200' :
+                    task.status === 'Em Progresso' ? 'bg-indigo-100 text-indigo-800 border-indigo-200' :
+                    'bg-amber-100 text-amber-800 border-amber-200'
+                  }`}>
+                    {task.status}
+                  </span>
+                </div>
+                <h4 className="font-black text-base text-slate-900">{task.title}</h4>
+                {task.description && <p className="text-xs text-slate-600 line-clamp-2">{task.description}</p>}
+                <div className="text-xs text-slate-500 flex items-center gap-1">
+                  <Clock className="w-3.5 h-3.5" /> Responsável: <strong className="text-slate-700">{task.assignee}</strong>
+                </div>
               </div>
-              <h4 className="font-black text-base text-slate-900">{prog.name}</h4>
-              <div className="text-xs text-slate-600">Apresentador: <strong>{prog.host}</strong></div>
-              <div className="text-xs text-slate-500">Horário: {prog.schedule}</div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     );
   }

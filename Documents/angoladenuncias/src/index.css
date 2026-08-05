@@ -6,6 +6,53 @@
 
 @layer base {
   :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+
+    --primary: 0 72% 51%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --success: 142.1 70.6% 45.3%;
+    --success-foreground: 144.4 61.4% 91.2%;
+
+    --ring: 0 72% 51%;
+
+    --radius: 0.25rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --font-heading: 'Playfair Display', Georgia, serif;
+    --font-body: 'Inter', -apple-system, sans-serif;
+  }
+
+  .dark {
     --background: 0 0% 7%;
     --foreground: 0 0% 95%;
 
@@ -32,9 +79,10 @@
 
     --border: 0 0% 18%;
     --input: 0 0% 18%;
-    --ring: 0 72% 51%;
+    --success: 142.1 70.6% 45.3%;
+    --success-foreground: 144.4 61.4% 91.2%;
 
-    --radius: 0.25rem;
+    --ring: 0 72% 51%;
 
     --sidebar-background: 0 0% 8%;
     --sidebar-foreground: 0 0% 90%;
@@ -44,9 +92,6 @@
     --sidebar-accent-foreground: 0 0% 90%;
     --sidebar-border: 0 0% 18%;
     --sidebar-ring: 0 72% 51%;
-
-    --font-heading: 'Playfair Display', Georgia, serif;
-    --font-body: 'Inter', -apple-system, sans-serif;
   }
 }
 
@@ -58,9 +103,38 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
+    /* Protecção de Conteúdo */
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    -webkit-touch-callout: none !important;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  /* Permitir selecção apenas em inputs e textareas */
+  input,
+  textarea,
+  [contenteditable="true"] {
+    user-select: text !important;
+    -webkit-user-select: text !important;
+  }
+
+  img,
+  video,
+  canvas,
+  svg {
+    pointer-events: none !important;
+    -webkit-user-drag: none !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+  }
+
+
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-heading);
   }
 }
@@ -80,7 +154,7 @@
   }
 
   .news-headline-hover {
-    @apply transition-colors duration-200 hover:text-primary cursor-pointer;
+    @apply transition-colors duration-200 hover:text-primary cursor-pointer text-foreground;
   }
 
   .section-divider {
@@ -94,4 +168,15 @@
   .nav-link-active {
     @apply text-primary;
   }
+}
+/* Justificar textos automaticamente */
+.text-justify {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.prose p,
+.article-body p {
+  text-align: justify;
+  text-justify: inter-word;
 }

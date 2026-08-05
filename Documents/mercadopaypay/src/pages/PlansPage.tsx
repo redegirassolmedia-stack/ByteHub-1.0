@@ -5,12 +5,22 @@ import Footer from "@/components/Footer";
 import { useSubscription } from "@/hooks/useSubscription";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useRegion } from "@/hooks/useRegion";
 
 const PlansPage = () => {
     const { startTrial } = useSubscription();
     const navigate = useNavigate();
+    const { selectedCountry } = useRegion();
+
+    const { user } = useSubscription() as any; // Need to check if user is available in useSubscription or useAuth
 
     const handleStartTrial = async () => {
+        if (!user) {
+            toast.error("Você precisa estar logado para ativar o teste.");
+            navigate("/auth");
+            return;
+        }
+
         try {
             await startTrial();
             toast.success("Teste de 3 meses ativado com sucesso!");
@@ -38,7 +48,7 @@ const PlansPage = () => {
                     <div className="rounded-3xl border p-8 bg-card flex flex-col hover:border-primary/50 transition-colors">
                         <h2 className="text-2xl font-bold mb-2">Plano Grátis</h2>
                         <div className="flex items-baseline gap-1 mb-6">
-                            <span className="text-4xl font-extrabold">R$ 0</span>
+                            <span className="text-4xl font-extrabold">{selectedCountry.currency} 0</span>
                             <span className="text-muted-foreground">/mês</span>
                         </div>
                         <ul className="space-y-4 mb-8 flex-1 text-sm">

@@ -6,10 +6,12 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Plus, Edit, Trash2, Eye, EyeOff } from "lucide-react";
 import Header from "@/components/Header";
+import { useRegion } from "@/hooks/useRegion";
 
 const MyListingsPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { formatPrice } = useRegion();
   const [listings, setListings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -78,14 +80,13 @@ const MyListingsPage = () => {
                     <div>
                       <h3 className="font-semibold text-sm truncate">{listing.title}</h3>
                       <p className="text-lg font-extrabold text-foreground">
-                        R$ {Number(listing.price).toLocaleString("pt-BR")}
+                        {formatPrice(listing.price)}
                       </p>
                       <div className="flex items-center gap-2 mt-1">
-                        <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
-                          listing.status === "active" ? "bg-accent text-accent-foreground" :
-                          listing.status === "sold" ? "bg-muted text-muted-foreground" :
-                          "bg-secondary text-secondary-foreground"
-                        }`}>
+                        <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${listing.status === "active" ? "bg-accent text-accent-foreground" :
+                            listing.status === "sold" ? "bg-muted text-muted-foreground" :
+                              "bg-secondary text-secondary-foreground"
+                          }`}>
                           {listing.status === "active" ? "Ativo" : listing.status === "sold" ? "Vendido" : "Pausado"}
                         </span>
                         <span className="text-xs text-muted-foreground">{listing.categories?.name}</span>

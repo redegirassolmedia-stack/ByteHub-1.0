@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { TeamMember } from '../../types';
 import { X, UserPlus, Mail, Shield, Briefcase, Image as ImageIcon, Upload, Paperclip } from 'lucide-react';
+import { compressImage } from '../../utils/imageCompressor';
 
 interface NewTeamMemberModalProps {
   isOpen: boolean;
@@ -28,26 +29,27 @@ export const NewTeamMemberModal: React.FC<NewTeamMemberModalProps> = ({
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = async (event) => {
       if (event.target?.result) {
-        setAvatar(event.target.result as string);
+        const rawDataUrl = event.target.result as string;
+        const compressed = await compressImage(rawDataUrl, 256, 256, 0.8);
+        setAvatar(compressed);
       }
     };
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
 
-    const defaultAvatars = [
-      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
-      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200',
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200',
-      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200'
-    ];
+    const encodedName = encodeURIComponent(name.trim());
+    let finalAvatar = avatar.trim() ||
+      `https://ui-avatars.com/api/?name=${encodedName}&background=1e293b&color=f59e0b&size=128&bold=true`;
 
-    const finalAvatar = avatar.trim() || defaultAvatars[Math.floor(Math.random() * defaultAvatars.length)];
+    if (finalAvatar.startsWith('data:image')) {
+      finalAvatar = await compressImage(finalAvatar, 256, 256, 0.8);
+    }
 
     const newMember: TeamMember = {
       id: `usr-${Date.now()}`,
@@ -56,7 +58,9 @@ export const NewTeamMemberModal: React.FC<NewTeamMemberModalProps> = ({
       department,
       email: email.trim() || `${name.toLowerCase().replace(/\s+/g, '.')}@girassol.ao`,
       avatar: finalAvatar,
-      activeTasks: 0
+      activeTasks: 0,
+      password: 'user123',
+      isAdmin: false,
     };
 
     onAddTeamMember(newMember);

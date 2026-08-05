@@ -5,12 +5,19 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: "/angoladenuncias/",
+  base: "/",
   server: {
     host: "::",
     port: 8080,
     hmr: {
       overlay: false,
+    },
+    proxy: {
+      "/api/radio-stream": {
+        target: "http://102.222.150.46:8800",
+        changeOrigin: true,
+        rewrite: (path) => "/GirassolFM",
+      },
     },
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),

@@ -11,7 +11,10 @@ import {
 } from "lucide-react";
 import AdminLayout from "@/components/AdminLayout";
 
+import { useNavigate } from "react-router-dom";
+
 const AdminDashboard = () => {
+    const navigate = useNavigate();
     // Fetch stats
     const { data: stats, isLoading } = useQuery({
         queryKey: ["admin-stats"],
@@ -119,7 +122,10 @@ const AdminDashboard = () => {
                             Ações Rápidas
                         </h3>
                         <div className="space-y-3">
-                            <button className="w-full flex items-center gap-3 p-3 rounded-lg border hover:bg-muted transition-colors text-left group">
+                            <button
+                                onClick={() => navigate("/admin/anuncios")}
+                                className="w-full flex items-center gap-3 p-3 rounded-lg border hover:bg-muted transition-colors text-left group"
+                            >
                                 <div className="bg-primary/10 text-primary p-2 rounded-md group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                                     <CheckCircle2 className="h-4 w-4" />
                                 </div>
@@ -128,7 +134,10 @@ const AdminDashboard = () => {
                                     <p className="text-xs text-muted-foreground">{stats?.pendingApproval} pendentes</p>
                                 </div>
                             </button>
-                            <button className="w-full flex items-center gap-3 p-3 rounded-lg border hover:bg-muted transition-colors text-left group">
+                            <button
+                                onClick={() => navigate("/admin/usuarios")}
+                                className="w-full flex items-center gap-3 p-3 rounded-lg border hover:bg-muted transition-colors text-left group"
+                            >
                                 <div className="bg-blue-100 text-blue-600 p-2 rounded-md group-hover:bg-blue-600 group-hover:text-white transition-colors">
                                     <DollarSign className="h-4 w-4" />
                                 </div>
@@ -137,7 +146,10 @@ const AdminDashboard = () => {
                                     <p className="text-xs text-muted-foreground">Gerenciar planos premium</p>
                                 </div>
                             </button>
-                            <button className="w-full flex items-center gap-3 p-3 rounded-lg border hover:bg-muted transition-colors text-left group">
+                            <button
+                                onClick={() => navigate("/admin/configuracoes")}
+                                className="w-full flex items-center gap-3 p-3 rounded-lg border hover:bg-muted transition-colors text-left group"
+                            >
                                 <div className="bg-purple-100 text-purple-600 p-2 rounded-md group-hover:bg-purple-600 group-hover:text-white transition-colors">
                                     <Settings className="h-4 w-4" />
                                 </div>

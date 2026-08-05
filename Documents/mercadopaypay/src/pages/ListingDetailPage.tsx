@@ -6,11 +6,13 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { ArrowLeft, MapPin, Heart, MessageCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import Header from "@/components/Header";
+import { useRegion } from "@/hooks/useRegion";
 
 const ListingDetailPage = () => {
   const { id } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { formatPrice } = useRegion();
   const [listing, setListing] = useState<any>(null);
   const [seller, setSeller] = useState<any>(null);
   const [isFavorited, setIsFavorited] = useState(false);
@@ -154,7 +156,7 @@ const ListingDetailPage = () => {
           <div className="md:col-span-2 space-y-4">
             <div>
               <p className="text-3xl font-extrabold text-foreground">
-                R$ {Number(listing.price).toLocaleString("pt-BR", { minimumFractionDigits: 0 })}
+                {formatPrice(listing.price)}
               </p>
               <h1 className="text-lg text-foreground mt-1">{listing.title}</h1>
               <div className="flex items-center gap-1 text-sm text-muted-foreground mt-2">

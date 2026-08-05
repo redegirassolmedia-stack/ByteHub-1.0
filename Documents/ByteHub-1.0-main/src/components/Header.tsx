@@ -1,6 +1,6 @@
 import React from 'react';
 import { MainNavSection, TeamMember } from '../types';
-import { Menu, Bell, PlusCircle, FileSpreadsheet, RotateCcw, KeyRound, LogOut, ShieldCheck } from 'lucide-react';
+import { Menu, Bell, PlusCircle, FileSpreadsheet, RotateCcw, KeyRound, LogOut, ShieldCheck, Lock } from 'lucide-react';
 
 interface HeaderProps {
   currentSection: MainNavSection;
@@ -96,7 +96,8 @@ export const Header: React.FC<HeaderProps> = ({
             <span className="hidden xs:inline">+ NOVO RELATÓRIO</span>
           </button>
 
-          {onOpenCredentialsModal && (
+          {/* Credenciais: apenas administradores */}
+          {onOpenCredentialsModal && activeUser.isAdmin && (
             <button
               onClick={onOpenCredentialsModal}
               title="Gerir Credenciais e Palavras-passe da Equipa"
@@ -107,7 +108,8 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           )}
 
-          {onOpenResetModal && (
+          {/* Reset: apenas administradores */}
+          {onOpenResetModal && activeUser.isAdmin && (
             <button
               onClick={onOpenResetModal}
               title="Resetar / Restaurar Dados do Sistema (Incluindo Utilizadores)"
@@ -120,18 +122,30 @@ export const Header: React.FC<HeaderProps> = ({
           {/* User profile & Logout */}
           <div className="flex items-center space-x-2 pl-2 border-l border-slate-200">
             <button
-              onClick={onOpenCredentialsModal}
-              title="O seu Perfil e Foto — Clique para Alterar Acessos / Imagem de Perfil"
-              className="flex items-center space-x-2 p-1 hover:bg-slate-100 rounded-xl transition-all cursor-pointer group text-left"
+              onClick={activeUser.isAdmin ? onOpenCredentialsModal : undefined}
+              title={activeUser.isAdmin ? 'Gerir Credenciais da Equipa' : `${activeUser.name} — ${activeUser.role}`}
+              className={`flex items-center space-x-2 p-1 rounded-xl transition-all text-left ${
+                activeUser.isAdmin ? 'hover:bg-slate-100 cursor-pointer group' : 'cursor-default'
+              }`}
             >
               <div className="relative">
                 <img
                   src={activeUser.avatar}
                   alt={activeUser.name}
-                  className="w-9 h-9 rounded-full object-cover border-2 border-amber-400 shrink-0 group-hover:border-indigo-600 transition-colors shadow-2xs"
+                  className={`w-9 h-9 rounded-full object-cover border-2 shrink-0 shadow-2xs transition-colors ${
+                    activeUser.isAdmin
+                      ? 'border-amber-400 group-hover:border-indigo-600'
+                      : 'border-slate-300'
+                  }`}
                 />
-                <span className="absolute -bottom-0.5 -right-0.5 bg-slate-900 text-amber-400 p-0.5 rounded-full border border-white text-[9px] group-hover:bg-amber-400 group-hover:text-slate-950 transition-colors">
-                  <KeyRound className="w-2.5 h-2.5" />
+                <span className={`absolute -bottom-0.5 -right-0.5 p-0.5 rounded-full border border-white text-[9px] transition-colors ${
+                  activeUser.isAdmin
+                    ? 'bg-slate-900 text-amber-400 group-hover:bg-amber-400 group-hover:text-slate-950'
+                    : 'bg-slate-500 text-white'
+                }`}>
+                  {activeUser.isAdmin
+                    ? <KeyRound className="w-2.5 h-2.5" />
+                    : <Lock className="w-2.5 h-2.5" />}
                 </span>
               </div>
               <div className="hidden xl:block text-left">

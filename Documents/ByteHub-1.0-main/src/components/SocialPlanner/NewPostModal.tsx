@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { SocialPostItem, DayOfWeek, PostStatus, PostFormat, PlatformType, TeamMember } from '../../types';
 import { TEAM_MEMBERS } from '../../data/initialData';
+import { compressImage } from '../../utils/imageCompressor';
 import {
   X,
   Send,
@@ -73,9 +74,11 @@ export const NewPostModal: React.FC<NewPostModalProps> = ({
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = async (event) => {
       if (event.target?.result) {
-        setMediaUrl(event.target.result as string);
+        const rawUrl = event.target.result as string;
+        const compressed = await compressImage(rawUrl, 600, 600, 0.75);
+        setMediaUrl(compressed);
       }
     };
     reader.readAsDataURL(file);

@@ -26,7 +26,45 @@ import { fetchTasksFromSupabase, saveTaskToSupabase, deleteTaskFromSupabase } fr
 import { resetSupabaseInstance } from './lib/supabase';
 
 export default function App() {
-  const [currentSection, setCurrentSection] = useState<MainNavSection>('planeamento');
+  // ─── MIGRAÇÃO DE DADOS ──────────────────────────────────────────────────────
+  // Limpa dados de exemplo de versões anteriores do sistema.
+  // A versão '2.0' indica instalação limpa e profissional.
+  React.useEffect(() => {
+    const dataVersion = localStorage.getItem('girassol_data_version');
+    if (dataVersion !== '2.0') {
+      const existingTasks = localStorage.getItem('girassol_tasks');
+      const existingPosts = localStorage.getItem('girassol_posts');
+      const existingReports = localStorage.getItem('girassol_reports');
+
+      if (existingTasks) {
+        try {
+          const parsed = JSON.parse(existingTasks);
+          if (Array.isArray(parsed) && parsed.some((t: any) => t.id?.startsWith('task-'))) {
+            localStorage.removeItem('girassol_tasks');
+          }
+        } catch {}
+      }
+      if (existingPosts) {
+        try {
+          const parsed = JSON.parse(existingPosts);
+          if (Array.isArray(parsed) && parsed.some((p: any) => p.id?.startsWith('post-'))) {
+            localStorage.removeItem('girassol_posts');
+          }
+        } catch {}
+      }
+      if (existingReports) {
+        try {
+          const parsed = JSON.parse(existingReports);
+          if (Array.isArray(parsed) && parsed.some((r: any) => r.id?.startsWith('rep-'))) {
+            localStorage.removeItem('girassol_reports');
+          }
+        } catch {}
+      }
+      localStorage.setItem('girassol_data_version', '2.0');
+    }
+  }, []);
+
+  const [currentSection, setCurrentSection] = useState<MainNavSection>('dashboard');
   const [reports, setReports] = useState<MetricReport[]>(() => {
     try {
       const saved = localStorage.getItem('girassol_reports');
@@ -48,23 +86,56 @@ export default function App() {
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>(() => {
     try {
       const saved = localStorage.getItem('girassol_team_members');
-      return saved ? JSON.parse(saved) : TEAM_MEMBERS;
+      const parsed = saved ? JSON.parse(saved) : null;
+      return Array.isArray(parsed) && parsed.length > 0 ? parsed : TEAM_MEMBERS;
     } catch { return TEAM_MEMBERS; }
   });
 
-  // Load tasks from Supabase on startup if configured
+  // Load tasks from Supabase on startup if configured (only replace if Supabase returns items)
   useEffect(() => {
     fetchTasksFromSupabase().then((supaTasks) => {
-      if (supaTasks && supaTasks.length > 0) {
+      if (supaTasks !== null && supaTasks.length > 0) {
         setTasks(supaTasks);
       }
     });
+
+    // Real-time synchronization across tabs / sessions via BroadcastChannel & Storage events
+    let broadcastChannel: BroadcastChannel | null = null;
+    try {
+      broadcastChannel = new BroadcastChannel('girassol_data_sync');
+      broadcastChannel.onmessage = (event) => {
+        const { type, payload } = event.data || {};
+        if (type === 'SYNC_TASKS' && payload) setTasks(payload);
+        if (type === 'SYNC_POSTS' && payload) setPosts(payload);
+        if (type === 'SYNC_TEAM' && payload) setTeamMembers(payload);
+      };
+    } catch {}
+
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'girassol_tasks' && e.newValue) {
+        try { setTasks(JSON.parse(e.newValue)); } catch {}
+      }
+      if (e.key === 'girassol_posts' && e.newValue) {
+        try { setPosts(JSON.parse(e.newValue)); } catch {}
+      }
+      if (e.key === 'girassol_team_members' && e.newValue) {
+        try { setTeamMembers(JSON.parse(e.newValue)); } catch {}
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      if (broadcastChannel) broadcastChannel.close();
+    };
   }, []);
 
   // Auth state
   const [currentUser, setCurrentUser] = useState<TeamMember | null>(() => {
-    const savedUser = localStorage.getItem('girassol_current_user');
-    return savedUser ? JSON.parse(savedUser) : null;
+    try {
+      const savedUser = localStorage.getItem('girassol_current_user');
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch { return null; }
   });
 
   // UI Modals
@@ -88,26 +159,55 @@ export default function App() {
 
   // Persist all data to localStorage so it survives page refresh
   useEffect(() => {
-    localStorage.setItem('girassol_team_members', JSON.stringify(teamMembers));
+    try {
+      localStorage.setItem('girassol_team_members', JSON.stringify(teamMembers));
+      const bc = new BroadcastChannel('girassol_data_sync');
+      bc.postMessage({ type: 'SYNC_TEAM', payload: teamMembers });
+      bc.close();
+    } catch (e) {
+      console.warn('Erro ao guardar membros da equipa no localStorage:', e);
+    }
   }, [teamMembers]);
 
   useEffect(() => {
-    localStorage.setItem('girassol_tasks', JSON.stringify(tasks));
+    try {
+      localStorage.setItem('girassol_tasks', JSON.stringify(tasks));
+      const bc = new BroadcastChannel('girassol_data_sync');
+      bc.postMessage({ type: 'SYNC_TASKS', payload: tasks });
+      bc.close();
+    } catch (e) {
+      console.warn('Erro ao guardar tarefas no localStorage:', e);
+    }
   }, [tasks]);
 
   useEffect(() => {
-    localStorage.setItem('girassol_posts', JSON.stringify(posts));
+    try {
+      localStorage.setItem('girassol_posts', JSON.stringify(posts));
+      const bc = new BroadcastChannel('girassol_data_sync');
+      bc.postMessage({ type: 'SYNC_POSTS', payload: posts });
+      bc.close();
+    } catch (e) {
+      console.warn('Erro ao guardar posts no localStorage:', e);
+    }
   }, [posts]);
 
   useEffect(() => {
-    localStorage.setItem('girassol_reports', JSON.stringify(reports));
+    try {
+      localStorage.setItem('girassol_reports', JSON.stringify(reports));
+    } catch (e) {
+      console.warn('Erro ao guardar relatórios no localStorage:', e);
+    }
   }, [reports]);
 
   useEffect(() => {
-    if (currentUser) {
-      localStorage.setItem('girassol_current_user', JSON.stringify(currentUser));
-    } else {
-      localStorage.removeItem('girassol_current_user');
+    try {
+      if (currentUser) {
+        localStorage.setItem('girassol_current_user', JSON.stringify(currentUser));
+      } else {
+        localStorage.removeItem('girassol_current_user');
+      }
+    } catch (e) {
+      console.warn('Erro ao guardar utilizador atual no localStorage:', e);
     }
   }, [currentUser]);
 
@@ -229,6 +329,7 @@ export default function App() {
       {/* Sidebar Navigation */}
       <Sidebar
         currentSection={currentSection}
+        currentUser={currentUser}
         onSelectSection={setCurrentSection}
         isOpenMobile={isOpenMobileSidebar}
         onCloseMobile={() => setIsOpenMobileSidebar(false)}
@@ -252,6 +353,10 @@ export default function App() {
           {currentSection === 'dashboard' && (
             <Dashboard
               reports={reports}
+              tasks={tasks}
+              posts={posts}
+              teamMembers={teamMembers}
+              currentUser={currentUser}
               onNavigateSection={setCurrentSection}
               onOpenPdfView={(r) => setSelectedPdfReport(r)}
             />
@@ -273,6 +378,7 @@ export default function App() {
               tasks={tasks}
               posts={posts}
               teamMembers={teamMembers}
+              currentUser={currentUser}
               onOpenNewTaskModal={handleOpenNewTaskModal}
               onUpdateTaskStatus={handleUpdateTaskStatus}
               onDeleteTask={handleDeleteTask}
